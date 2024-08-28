@@ -1,106 +1,172 @@
 import React, { useState } from 'react';
 
 const AdminPanel = ({ profiles, setProfiles }) => {
-  const [form, setForm] = useState({ name: '', photo: '', description: '', lng: '', lat: '' });
-  const [editId, setEditId] = useState(null);
+  const [newProfile, setNewProfile] = useState({
+    id: '',
+    name: '',
+    description: '',
+    photo: '',
+    location: { lng: '', lat: '' }
+  });
+  const [imagePreview, setImagePreview] = useState('');
+  const [editing, setEditing] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setNewProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editId) {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewProfile((prevProfile) => ({
+        ...prevProfile,
+        photo: URL.createObjectURL(file)
+      }));
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleAddOrUpdateProfile = () => {
+    if (editing) {
       // Update existing profile
-      setProfiles((prev) =>
-        prev.map((profile) =>
-          profile.id === editId ? { ...profile, ...form } : profile
+      setProfiles((prevProfiles) =>
+        prevProfiles.map((profile) =>
+          profile.id === newProfile.id ? newProfile : profile
         )
       );
+      setEditing(false);
     } else {
       // Add new profile
-      setProfiles((prev) => [
-        ...prev,
-        { ...form, id: Date.now().toString() }
+      setProfiles((prevProfiles) => [
+        ...prevProfiles,
+        { id: Date.now().toString(), ...newProfile }
       ]);
     }
-    setForm({ name: '', photo: '', description: '', lng: '', lat: '' });
-    setEditId(null);
+    setNewProfile({
+      id: '',
+      name: '',
+      description: '',
+      photo: '',
+      location: { lng: '', lat: '' }
+    });
+    setImagePreview('');
   };
 
-  const handleEdit = (profile) => {
-    setForm(profile);
-    setEditId(profile.id);
+  const handleEditProfile = (profile) => {
+    setNewProfile(profile);
+    setImagePreview(profile.photo);
+    setEditing(true);
   };
 
-  const handleDelete = (id) => {
-    setProfiles((prev) => prev.filter((profile) => profile.id !== id));
+  const handleDeleteProfile = (id) => {
+    setProfiles((prevProfiles) =>
+      prevProfiles.filter((profile) => profile.id !== id)
+    );
   };
 
   return (
-    <div>
+    <div className="p-4 bg-gray-800 rounded-lg max-w-4xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4">Admin Panel</h2>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-          className="p-2 mb-2 w-full"
-        />
-        <input
-          type="text"
-          name="photo"
-          value={form.photo}
-          onChange={handleChange}
-          placeholder="Photo URL"
-          className="p-2 mb-2 w-full"
-        />
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          className="p-2 mb-2 w-full"
-        />
-        <input
-          type="number"
-          name="lng"
-          value={form.lng}
-          onChange={handleChange}
-          placeholder="Longitude"
-          className="p-2 mb-2 w-full"
-        />
-        <input
-          type="number"
-          name="lat"
-          value={form.lat}
-          onChange={handleChange}
-          placeholder="Latitude"
-          className="p-2 mb-2 w-full"
-        />
-        <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
-          {editId ? 'Update Profile' : 'Add Profile'}
-        </button>
-      </form>
-      <h3 className="text-xl font-semibold mb-2">Profiles List</h3>
-      <ul>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label className="block text-sm font-medium text-white">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={newProfile.name}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 rounded-md text-white"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-white">Description</label>
+          <textarea
+            name="description"
+            value={newProfile.description}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 rounded-md text-white"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-white">Longitude</label>
+          <input
+            type="text"
+            name="lng"
+            value={newProfile.location.lng}
+            onChange={(e) => setNewProfile(prevProfile => ({
+              ...prevProfile,
+              location: { ...prevProfile.location, lng: e.target.value }
+            }))}
+            className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 rounded-md text-white"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-white">Latitude</label>
+          <input
+            type="text"
+            name="lat"
+            value={newProfile.location.lat}
+            onChange={(e) => setNewProfile(prevProfile => ({
+              ...prevProfile,
+              location: { ...prevProfile.location, lat: e.target.value }
+            }))}
+            className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 rounded-md text-white"
+          />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-white">Photo</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="block w-full p-2 border border-gray-600 bg-gray-700 text-white"
+          />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="mt-4 w-full h-40 object-cover rounded-md"
+            />
+          )}
+        </div>
+      </div>
+      <button
+        onClick={handleAddOrUpdateProfile}
+        className="mt-4 bg-primary text-white px-4 py-2 rounded"
+      >
+        {editing ? 'Update Profile' : 'Add Profile'}
+      </button>
+
+      <h3 className="text-xl font-semibold mt-8">Existing Profiles</h3>
+      <div className="mt-4 space-y-4">
         {profiles.map((profile) => (
-          <li key={profile.id} className="bg-gray-700 p-4 mb-2 rounded">
-            <h4 className="text-lg font-semibold">{profile.name}</h4>
-            {profile.photo && <img src={profile.photo} alt={profile.name} className="w-32 h-32 object-cover rounded-full" />}
-            <p>{profile.description}</p>
-            <button onClick={() => handleEdit(profile)} className="bg-yellow-500 text-white px-4 py-2 rounded mr-2">
-              Edit
-            </button>
-            <button onClick={() => handleDelete(profile.id)} className="bg-red-500 text-white px-4 py-2 rounded">
-              Delete
-            </button>
-          </li>
+          <div key={profile.id} className="bg-gray-700 p-4 rounded-lg flex items-center">
+            <img src={profile.photo} alt={profile.name} className="w-16 h-16 object-cover rounded-full mr-4" />
+            <div className="flex-1">
+              <h4 className="text-lg font-semibold">{profile.name}</h4>
+              <p>{profile.description}</p>
+              <div className="mt-2 flex space-x-2">
+                <button
+                  onClick={() => handleEditProfile(profile)}
+                  className="bg-primary text-white px-4 py-2 rounded"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteProfile(profile.id)}
+                  className="bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
