@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfileList from './components/ProfileList';
 import MapComponent from './components/MapComponent';
 import AdminPanel from './components/AdminPanel';
 
 function App() {
-  const [profiles, setProfiles] = useState([
-    {
-      id: 1,
-      name: 'Arpit kashyap',
-      photo: 'https://via.placeholder.com/150',
-      description: 'Software Engineer at XYZ.',
-      location: { lat: 40.7128, lng: -74.0060 },
-    },
-    {
-      id: 2,
-      name: 'Rishabh',
-      photo: 'https://via.placeholder.com/150',
-      description: 'Product Manager at ABC.',
-      location: { lat: 34.0522, lng: -118.2437 },
-    },
-  ]);
-
+  const [profiles, setProfiles] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await fetch('/profiles.json');
+        const data = await response.json();
+        setProfiles(data);
+      } catch (error) {
+        console.error('Error fetching profiles:', error);
+      }
+    };
+
+    fetchProfiles();
+  }, []);
 
   const handleProfileSelect = (location) => {
     setSelectedLocation(location);
@@ -57,7 +55,5 @@ function App() {
     </div>
   );
 }
-
-
 
 export default App;
