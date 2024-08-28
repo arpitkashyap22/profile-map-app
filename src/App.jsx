@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProfileList from './components/ProfileList';
 import MapComponent from './components/MapComponent';
+import SearchFilter from './components/SearchFilter';
+import LoadingIndicator from './components/LoadingIndicator';
+import ProfileDetails from './components/ProfileDetails';
 import AdminPanel from './components/AdminPanel';
+import Navbar from './components/Navbar';
 
 function App() {
   const [profiles, setProfiles] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -13,46 +20,32 @@ function App() {
         const response = await fetch('/profiles.json');
         const data = await response.json();
         setProfiles(data);
+        setFilteredProfiles(data);
       } catch (error) {
         console.error('Error fetching profiles:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProfiles();
   }, []);
 
-  const handleProfileSelect = (location) => {
-    setSelectedLocation(location);
-  };
-
-  const handleEditProfile = (profile) => {
-    const updatedProfiles = profiles.map((p) => (p.id === profile.id ? profile : p));
-    setProfiles(updatedProfiles);
-  };
-
-  const handleDeleteProfile = (id) => {
-    const updatedProfiles = profiles.filter((profile) => profile.id !== id);
-    setProfiles(updatedProfiles);
-  };
-
+  if (loading) return <LoadingIndicator />;
   return (
-    <div className="min-h-screen bg-secondary text-white">
-      <header className="text-center p-4 bg-primary">
-        <h1 className="text-4xl font-bold">Profile Map App</h1>
-      </header>
-      <main className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <AdminPanel profiles={profiles} setProfiles={setProfiles} />
-          <ProfileList
-            profiles={profiles}
-            onProfileSelect={handleProfileSelect}
-            onEdit={handleEditProfile}
-            onDelete={handleDeleteProfile}
-          />
-          <MapComponent location={selectedLocation} />
-        </div>
-      </main>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-secondary text-white">
+        <Navbar /> {/* Add Navbar here */}
+        <main className="p-4">
+          <Routes>
+            <Route path="/" element={<ProfileList profiles={profiles} />} />
+            <Route path="/profile/:id" element={<ProfileDetails profiles={profiles} />} />
+            <Route path="/admin" element={<AdminPanel profiles={profiles} setProfiles={setProfiles} />} />
+            <Route path="/map" element={<MapComponent />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 

@@ -1,75 +1,106 @@
 import React, { useState } from 'react';
 
 const AdminPanel = ({ profiles, setProfiles }) => {
-  const [formState, setFormState] = useState({ name: '', photo: '', description: '', lat: '', lng: '' });
+  const [form, setForm] = useState({ name: '', photo: '', description: '', lng: '', lat: '' });
+  const [editId, setEditId] = useState(null);
 
   const handleChange = (e) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newProfile = {
-      id: profiles.length + 1,
-      name: formState.name,
-      photo: formState.photo,
-      description: formState.description,
-      location: {
-        lat: parseFloat(formState.lat),
-        lng: parseFloat(formState.lng),
-      },
-    };
-    setProfiles([...profiles, newProfile]);
-    setFormState({ name: '', photo: '', description: '', lat: '', lng: '' });
+    if (editId) {
+      // Update existing profile
+      setProfiles((prev) =>
+        prev.map((profile) =>
+          profile.id === editId ? { ...profile, ...form } : profile
+        )
+      );
+    } else {
+      // Add new profile
+      setProfiles((prev) => [
+        ...prev,
+        { ...form, id: Date.now().toString() }
+      ]);
+    }
+    setForm({ name: '', photo: '', description: '', lng: '', lat: '' });
+    setEditId(null);
+  };
+
+  const handleEdit = (profile) => {
+    setForm(profile);
+    setEditId(profile.id);
+  };
+
+  const handleDelete = (id) => {
+    setProfiles((prev) => prev.filter((profile) => profile.id !== id));
   };
 
   return (
-    <div className="p-4 bg-gray-800 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-white">Admin Panel</h2>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <h2 className="text-2xl font-semibold mb-4">Admin Panel</h2>
+      <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="text"
           name="name"
-          placeholder="Name"
-          value={formState.name}
+          value={form.name}
           onChange={handleChange}
-          className="block w-full mb-2 p-2 bg-gray-700 text-white rounded"
+          placeholder="Name"
+          className="p-2 mb-2 w-full"
         />
         <input
           type="text"
           name="photo"
-          placeholder="Photo URL"
-          value={formState.photo}
+          value={form.photo}
           onChange={handleChange}
-          className="block w-full mb-2 p-2 bg-gray-700 text-white rounded"
+          placeholder="Photo URL"
+          className="p-2 mb-2 w-full"
         />
         <textarea
           name="description"
+          value={form.description}
+          onChange={handleChange}
           placeholder="Description"
-          value={formState.description}
-          onChange={handleChange}
-          className="block w-full mb-2 p-2 bg-gray-700 text-white rounded"
+          className="p-2 mb-2 w-full"
         />
         <input
-          type="text"
-          name="lat"
-          placeholder="Latitude"
-          value={formState.lat}
-          onChange={handleChange}
-          className="block w-full mb-2 p-2 bg-gray-700 text-white rounded"
-        />
-        <input
-          type="text"
+          type="number"
           name="lng"
-          placeholder="Longitude"
-          value={formState.lng}
+          value={form.lng}
           onChange={handleChange}
-          className="block w-full mb-4 p-2 bg-gray-700 text-white rounded"
+          placeholder="Longitude"
+          className="p-2 mb-2 w-full"
         />
-        <button type="submit" className="w-full bg-primary p-2 rounded text-white">
-          Add Profile
+        <input
+          type="number"
+          name="lat"
+          value={form.lat}
+          onChange={handleChange}
+          placeholder="Latitude"
+          className="p-2 mb-2 w-full"
+        />
+        <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
+          {editId ? 'Update Profile' : 'Add Profile'}
         </button>
       </form>
+      <h3 className="text-xl font-semibold mb-2">Profiles List</h3>
+      <ul>
+        {profiles.map((profile) => (
+          <li key={profile.id} className="bg-gray-700 p-4 mb-2 rounded">
+            <h4 className="text-lg font-semibold">{profile.name}</h4>
+            {profile.photo && <img src={profile.photo} alt={profile.name} className="w-32 h-32 object-cover rounded-full" />}
+            <p>{profile.description}</p>
+            <button onClick={() => handleEdit(profile)} className="bg-yellow-500 text-white px-4 py-2 rounded mr-2">
+              Edit
+            </button>
+            <button onClick={() => handleDelete(profile.id)} className="bg-red-500 text-white px-4 py-2 rounded">
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
