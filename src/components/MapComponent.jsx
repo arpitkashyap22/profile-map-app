@@ -4,35 +4,31 @@ import { useLocation } from 'react-router-dom';
 
 const MapComponent = () => {
   const mapContainer = useRef(null);
-  const { search } = useLocation();
-  const params = new URLSearchParams(search);
-  const lng = parseFloat(params.get('lng'));
-  const lat = parseFloat(params.get('lat'));
+  const location = useLocation();
 
   useEffect(() => {
-    if (mapContainer.current && lng && lat) {
-      mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN'; // Replace with your Mapbox token
+    const params = new URLSearchParams(location.search);
+    const lng = parseFloat(params.get('lng')) || -122.4194; // Default to San Francisco
+    const lat = parseFloat(params.get('lat')) || 37.7749; // Default to San Francisco
 
-      const map = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [lng, lat],
-        zoom: 12,
-      });
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+    const map = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [lng, lat],
+      zoom: 12
+    });
 
-      new mapboxgl.Marker()
-        .setLngLat([lng, lat])
-        .addTo(map);
+    new mapboxgl.Marker()
+      .setLngLat([lng, lat])
+      .addTo(map);
 
-      map.on('load', () => {
-        map.resize();
-      });
+    return () => map.remove(); // Clean up on unmount
+  }, [location.search]);
 
-      return () => map.remove(); // Cleanup on component unmount
-    }
-  }, [lng, lat]);
-
-  return <div ref={mapContainer} className="w-full h-80"></div>;
+  return (
+    <div className="w-full h-80 md:h-96 lg:h-[500px]" ref={mapContainer}></div>
+  );
 };
 
 export default MapComponent;

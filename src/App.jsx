@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import ProfileList from './components/ProfileList';
 import MapComponent from './components/MapComponent';
 import SearchFilter from './components/SearchFilter';
@@ -33,19 +33,16 @@ function App() {
 
   if (loading) return <LoadingIndicator />;
   return (
-    <Router>
-      <div className="min-h-screen bg-secondary text-white">
-        <Navbar /> {/* Add Navbar here */}
-        <main className="p-4">
+    <BrowserRouter>
+
+        <Navbar />
           <Routes>
             <Route path="/" element={<ProfileList profiles={profiles} />} />
             <Route path="/profile/:id" element={<ProfileDetails profiles={profiles} />} />
             <Route path="/admin" element={<AdminPanel profiles={profiles} setProfiles={setProfiles} />} />
             <Route path="/map" element={<MapComponent />} />
           </Routes>
-        </main>
-      </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

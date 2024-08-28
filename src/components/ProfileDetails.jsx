@@ -3,13 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const ProfileDetails = ({ profiles }) => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Using useNavigate for navigation
+  const navigate = useNavigate(); // Use navigate for navigation
   const profile = profiles.find(p => p.id === id);
 
   if (!profile) return <div>Profile not found</div>;
 
   const handleShowOnMap = () => {
-    // Ensure location is available and navigate to the map page
+    // Navigate to the map page with lng and lat as query parameters
     if (profile.location && profile.location.lng && profile.location.lat) {
       navigate(`/map?lng=${profile.location.lng}&lat=${profile.location.lat}`);
     } else {
