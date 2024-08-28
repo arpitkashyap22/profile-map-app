@@ -12,6 +12,19 @@
       "photo": "",
       "description": "Product Manager at ABC.",
       "location": { "lat": 34.0522, "lng": -118.2437 }
+    },
+    {
+        "id": "unique-id",
+        "name": "John Doe",
+        "photo": "http://example.com/photo.jpg",
+        "description": "A brief description",
+        "address": "123 Main St, City, Country",
+        "contactInfo": "+1234567890",
+        "interests": "Reading, Traveling",
+        "location": {
+          "lat": 37.7749,
+          "lng": -122.4194
+        }
     }
   ]
   
