@@ -1,16 +1,26 @@
-import {useState}from 'react';
+import React, { useEffect } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-const MapComponent = () => {
-  const [viewport, setViewport] = useState({
-    latitude: -3.745,
-    longitude: -38.523,
+const MapComponent = ({ location }) => {
+  const [viewport, setViewport] = React.useState({
+    latitude: location?.lat || -3.745,
+    longitude: location?.lng || -38.523,
     zoom: 10,
   });
 
+  useEffect(() => {
+    if (location) {
+      setViewport({
+        ...viewport,
+        latitude: location.lat,
+        longitude: location.lng,
+        zoom: 12,
+      });
+    }
+  }, [location]);
 
   return (
     <Map
@@ -20,11 +30,7 @@ const MapComponent = () => {
       mapboxAccessToken={MAPBOX_TOKEN}
       onViewportChange={(newViewport) => setViewport(newViewport)}
     >
-      <Marker
-        longitude={-38.523}
-        latitude={-3.745}
-        color="red"
-      />
+      {location && <Marker longitude={location.lng} latitude={location.lat} color="red" />}
     </Map>
   );
 };
