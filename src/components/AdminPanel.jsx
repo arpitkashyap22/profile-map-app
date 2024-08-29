@@ -52,7 +52,6 @@ const AdminPanel = ({ addProfile }) => {
     <div className="p-4 bg-gray-800 rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">Add New Profile</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Input Fields */}
         <input
           type="text"
           name="name"

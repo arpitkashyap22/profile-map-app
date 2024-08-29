@@ -3,7 +3,7 @@ import React from 'react';
 const LoadingIndicator = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="loader"></div>
-    <style jsx>{`
+    <style >{`
       .loader {
         border: 8px solid #f3f3f3;
         border-radius: 50%;

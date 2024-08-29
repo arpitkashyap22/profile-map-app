@@ -1,30 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const SearchFilter = ({ profiles, setFilteredProfiles }) => {
-  const [query, setQuery] = useState('');
-
-  const handleSearch = () => {
-    const filtered = profiles.filter((profile) =>
-      profile.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredProfiles(filtered);
-  };
-
+const SearchFilter = ({ search, filter, onSearchChange, onFilterChange }) => {
   return (
     <div className="mb-4">
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search profiles..."
-        className="p-2 bg-gray-700 text-white rounded w-full"
+        placeholder="Search by name, state, or ID..."
+        value={search}
+        onChange={onSearchChange}
+        className="block w-full p-2 border border-gray-600 bg-gray-700 rounded-md text-white mb-2"
       />
-      <button
-        onClick={handleSearch}
-        className="mt-2 bg-primary text-white px-4 py-2 rounded"
-      >
-        Search
-      </button>
+     
     </div>
   );
 };
