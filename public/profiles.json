@@ -2,7 +2,7 @@
     {
       "id": 1,
       "name": "Amit Sharma",
-      "photo": "http://example.com/photo1.jpg",
+      "photo": "",
       "description": "Software Engineer from Bangalore.",
       "address": "123 MG Road, Bangalore, Karnataka, India",
       "contactInfo": "+91-9876543210",
@@ -15,7 +15,7 @@
     {
       "id": 2,
       "name": "Sita Patel",
-      "photo": "http://example.com/photo2.jpg",
+      "photo": "",
       "description": "Graphic Designer from Mumbai.",
       "address": "456 Bandra West, Mumbai, Maharashtra, India",
       "contactInfo": "+91-9876543211",
@@ -28,7 +28,7 @@
     {
       "id": 3,
       "name": "Raj Kumar",
-      "photo": "http://example.com/photo3.jpg",
+      "photo": "",
       "description": "Marketing Specialist from Delhi.",
       "address": "789 Connaught Place, New Delhi, Delhi, India",
       "contactInfo": "+91-9876543212",
@@ -41,7 +41,7 @@
     {
       "id": 4,
       "name": "Priya Singh",
-      "photo": "http://example.com/photo4.jpg",
+      "photo": "",
       "description": "Teacher from Kolkata.",
       "address": "321 Park Street, Kolkata, West Bengal, India",
       "contactInfo": "+91-9876543213",
@@ -54,7 +54,7 @@
     {
       "id": 5,
       "name": "Vikram Singh",
-      "photo": "http://example.com/photo5.jpg",
+      "photo": "",
       "description": "Entrepreneur from Chennai.",
       "address": "654 Marina Beach, Chennai, Tamil Nadu, India",
       "contactInfo": "+91-9876543214",

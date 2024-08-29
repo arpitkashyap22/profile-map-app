@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import LocationPickerModal from './LocationPickerModal';
+import { useNavigate } from 'react-router-dom';
+import profileService from '../services/ProfileService';
 
-const AdminPanel = ({ addProfile }) => {
+const AdminPanel = () => {
   const [profile, setProfile] = useState({
     name: '',
     photo: '',
@@ -11,10 +13,12 @@ const AdminPanel = ({ addProfile }) => {
     interests: '',
     location: {
       lat: 37.7749, // Default to San Francisco
-      lng: -122.4194
-    }
+      lng: -122.4194,
+    },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,21 +35,27 @@ const AdminPanel = ({ addProfile }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addProfile(profile);
-    setProfile({
-      name: '',
-      photo: '',
-      description: '',
-      address: '',
-      contactInfo: '',
-      interests: '',
-      location: {
-        lat: 37.7749,
-        lng: -122.4194,
-      },
-    });
+    try {
+      await profileService.addProfile(profile);
+      setProfile({
+        name: '',
+        photo: '',
+        description: '',
+        address: '',
+        contactInfo: '',
+        interests: '',
+        location: {
+          lat: 37.7749,
+          lng: -122.4194,
+        },
+      });
+      alert('Profile Added Successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error adding profile:', error);
+    }
   };
 
   return (
