@@ -42,4 +42,5 @@ class ProfileService {
   }
 }
 
-export default ProfileService;
+const profileService = new ProfileService();
+export default profileService;
