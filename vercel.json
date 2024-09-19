@@ -1,8 +1,5 @@
-
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-    "scripts": {
-      "build": "CI=false npm run build"
-    }
+  "scripts": {
+    "build": "CI=false vite build"
   }
-  
+}
