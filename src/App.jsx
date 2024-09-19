@@ -6,7 +6,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import ProfileDetails from './components/ProfileDetails';
 import AdminPanel from './components/AdminPanel';
 import Navbar from './components/Navbar';
-import profileService from './services/ProfileService';
+import ProfileService from './services/ProfileService'; // Import the service
 
 function App() {
   const [profiles, setProfiles] = useState([]);
@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const data = await profileService.getProfiles();
+        const data = await ProfileService.getProfiles(); // Call static method directly
         setProfiles(data);
       } catch (error) {
         console.error('Error fetching profiles:', error);
@@ -30,36 +30,23 @@ function App() {
   if (loading) return <LoadingIndicator />;
 
   const handleAddProfile = async (profile) => {
-    try {
-      await profileService.addProfile(profile);
-      setProfiles(await profileService.getProfiles());
-    } catch (error) {
-      console.error('Error adding profile:', error);
-    }
+    await ProfileService.addProfile(profile); // Call static method directly
+    setProfiles(await ProfileService.getProfiles()); // Reload profiles
   };
 
   const handleModifyProfile = async (profile) => {
-    try {
-      await profileService.modifyProfile(profile);
-      setProfiles(await profileService.getProfiles());
-    } catch (error) {
-      console.error('Error modifying profile:', error);
-    }
+    await ProfileService.modifyProfile(profile); // Call static method directly
+    setProfiles(await ProfileService.getProfiles()); // Reload profiles
   };
 
   const handleDeleteProfile = async (id) => {
-    try {
-      await profileService.deleteProfile(id);
-      setProfiles(await profileService.getProfiles());
-    } catch (error) {
-      console.error('Error deleting profile:', error);
-    }
+    await ProfileService.deleteProfile(id); // Call static method directly
+    setProfiles(await ProfileService.getProfiles()); // Reload profiles
   };
 
   return (
     <Router>
       <Navbar />
-      <div className='bg-secondary text-white"'>
       <Routes>
         <Route path="/" element={<ProfileList profiles={profiles} />} />
         <Route path="/profile/:id" element={<ProfileDetails profiles={profiles} />} />
@@ -72,7 +59,6 @@ function App() {
         } />
         <Route path="/map" element={<MapComponent />} />
       </Routes>
-      </div>
     </Router>
   );
 }

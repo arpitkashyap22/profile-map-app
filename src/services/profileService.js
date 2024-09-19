@@ -1,4 +1,3 @@
-// src/services/ProfileService.js
 let profiles = [];
 
 const loadProfiles = async () => {
@@ -9,13 +8,13 @@ const loadProfiles = async () => {
 
 const saveProfiles = async (newProfiles) => {
   profiles = newProfiles;
-  // This would be where you save to a backend or simulate persistence
+  // Simulate persistence or use backend
 };
 
 class ProfileService {
   static async getProfiles() {
     if (profiles.length === 0) {
-      await loadProfiles();
+      await loadProfiles(); // Reuse the `loadProfiles` function
     }
     return profiles;
   }
@@ -23,7 +22,7 @@ class ProfileService {
   static async addProfile(newProfile) {
     newProfile.id = profiles.length;
     profiles.unshift(newProfile);
-    await saveProfiles(profiles);
+    await saveProfiles(profiles); // Save after adding the profile
     return profiles;
   }
 
@@ -31,16 +30,15 @@ class ProfileService {
     profiles = profiles.map(profile =>
       profile.id === updatedProfile.id ? updatedProfile : profile
     );
-    await saveProfiles(profiles);
+    await saveProfiles(profiles); // Save after modification
     return profiles;
   }
 
   static async deleteProfile(id) {
     profiles = profiles.filter(profile => profile.id !== id);
-    await saveProfiles(profiles);
+    await saveProfiles(profiles); // Save after deletion
     return profiles;
   }
 }
 
-const profileService = new ProfileService();
-export default profileService;
+export default ProfileService; // No need to instantiate the class
