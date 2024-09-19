@@ -1,5 +1,8 @@
 {
-  "scripts": {
-    "build": "CI=false vite build"
-  }
+  "builds": [
+    { "src": "src/index.html", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/" }
+  ]
 }
