@@ -58,6 +58,7 @@ function App() {
           />
         } />
         <Route path="/map" element={<MapComponent />} />
+        <Route path="*" element={<h1>page not found</h1>} />
       </Routes>
     </Router>
   );
