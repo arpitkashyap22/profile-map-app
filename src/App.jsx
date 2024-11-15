@@ -6,7 +6,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import ProfileDetails from './components/ProfileDetails';
 import AdminPanel from './components/AdminPanel';
 import Navbar from './components/Navbar';
-import ProfileService from './services/ProfileService'; // Import the service
+import ProfileService from "./services/ProfileService.js";
 
 function App() {
   const [profiles, setProfiles] = useState([]);
