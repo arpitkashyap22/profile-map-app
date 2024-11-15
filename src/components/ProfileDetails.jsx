@@ -42,7 +42,7 @@ const ProfileDetails = ({ profiles, setProfiles }) => {
       <p className="text-gray-400 mb-2">Contact: {profile.contactInfo}</p>
       <p className="text-gray-400 mb-4">Interests: {profile.interests}</p>
       
-      <button
+      {/*<button
         onClick={() => window.location.href = `/map?lat=${encodeURIComponent(profile.location.lat)}&lng=${encodeURIComponent(profile.location.lng)}`}
         className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark mr-2"
       >
