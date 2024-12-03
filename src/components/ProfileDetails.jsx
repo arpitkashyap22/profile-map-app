@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import defaultPicture from '../assets/default-user-icon-3.jpg';
 import profileService from '../services/ProfileService';
+import { Link } from 'react-router-dom';
 
 const ProfileDetails = ({ profiles, setProfiles }) => {
   const { id } = useParams();
@@ -49,7 +50,13 @@ const ProfileDetails = ({ profiles, setProfiles }) => {
         Show on Map
       </button>
 
-      {/* Edit Button */}
+      {/* Edit Button */
+      <Link
+                    to={`/map?lat=${encodeURIComponent(profile.location.lat)}&lng=${encodeURIComponent(profile.location.lng)}`}
+                    className="bg-secondary text-white px-4 py-2 rounded m-2 hover:bg-secondary-dark"
+                  >
+                    Show on Map
+                  </Link>}
       <button
         onClick={handleEdit}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"

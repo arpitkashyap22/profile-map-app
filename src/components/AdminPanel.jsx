@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LocationPickerModal from './LocationPickerModal';
 import { useNavigate } from 'react-router-dom';
 import profileService from '../services/ProfileService';
