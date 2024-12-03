@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import defaultPicture from '../assets/default-user-icon-3.jpg';
-import profileService from '../services/ProfileService';
 import { Link } from 'react-router-dom';
 
+import ProfileService from '../services/ProfileService';
+
 const ProfileDetails = ({ profiles, setProfiles }) => {
+  
   const { id } = useParams();
   const navigate = useNavigate();
   const [currentProfiles, setCurrentProfiles] = useState(profiles);
@@ -20,7 +22,7 @@ const ProfileDetails = ({ profiles, setProfiles }) => {
     const confirmDelete = window.confirm(`Are you sure you want to delete ${profile.name}?`);
     if (confirmDelete) {
       try {
-        const updatedProfiles = await profileService.deleteProfile(profile.id);
+        const updatedProfiles = await ProfileService.deleteProfile(profile.id);
         setCurrentProfiles(updatedProfiles);
         setProfiles(updatedProfiles); // Update the profiles state in App component
         navigate('/'); // Redirect to the profile list after deletion

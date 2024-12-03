@@ -49,7 +49,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<ProfileList profiles={profiles} />} />
-        <Route path="/profile/:id" element={<ProfileDetails profiles={profiles} />} />
+        <Route path="/profile/:id" element={<ProfileDetails profiles={profiles} setProfiles={setProfiles} />} />
         <Route path="/admin" element={
           <AdminPanel
             addProfile={handleAddProfile}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchFilter from './SearchFilter';
 import defaultPicture from '../assets/default-user-icon-3.jpg';
