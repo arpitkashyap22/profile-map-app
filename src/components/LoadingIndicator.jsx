@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const LoadingIndicator = () => (
   <div className="flex items-center justify-center h-screen">

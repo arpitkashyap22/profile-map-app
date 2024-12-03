@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import MapboxGL from 'mapbox-gl';
 
 const LocationPickerModal = ({ isOpen, onClose, onSelectLocation }) => {

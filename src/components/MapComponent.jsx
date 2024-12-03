@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
@@ -15,8 +15,8 @@ const MapComponent = () => {
   const [marker, setMarker] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedSuggestion, setSelectedSuggestion] = useState(null);
-  const mapRef = useRef();
+  // const [selectedSuggestion, setSelectedSuggestion] = useState(null);
+  // const mapRef = useRef();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
